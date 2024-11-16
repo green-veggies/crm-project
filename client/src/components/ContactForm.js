@@ -1,40 +1,47 @@
-import React, { useState } from 'react';
-import { TextField, Button, Box, Typography, createTheme, ThemeProvider } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import {
+  TextField,
+  Button,
+  Box,
+  Typography,
+  createTheme,
+  ThemeProvider,
+} from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#1976d2',
+      main: "#1976d2",
     },
     secondary: {
-      main: '#dc004e',
+      main: "#dc004e",
     },
     background: {
-      default: '#f5f6fa',
+      default: "#f5f6fa",
     },
   },
   typography: {
-    fontFamily: 'Roboto, sans-serif',
+    fontFamily: "Roboto, sans-serif",
     h5: {
       fontWeight: 600,
-      color: '#333',
+      color: "#333",
     },
     body1: {
-      color: '#555',
+      color: "#555",
     },
   },
   components: {
     MuiTextField: {
       styleOverrides: {
         root: {
-          marginBottom: '16px',
-          '& .MuiInputBase-root': {
-            borderRadius: '8px',
-            backgroundColor: '#ffffff',
+          marginBottom: "16px",
+          "& .MuiInputBase-root": {
+            borderRadius: "8px",
+            backgroundColor: "#ffffff",
           },
-          '& .MuiInputLabel-root': {
-            color: '#666',
+          "& .MuiInputLabel-root": {
+            color: "#666",
           },
         },
       },
@@ -42,8 +49,8 @@ const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: '8px',
-          padding: '10px 0',
+          borderRadius: "8px",
+          padding: "10px 0",
         },
       },
     },
@@ -52,18 +59,18 @@ const theme = createTheme({
 
 const ContactForm = () => {
   const [contact, setContact] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phoneNumber: '',
-    company: '',
-    jobTitle: '',
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneNumber: "",
+    company: "",
+    jobTitle: "",
   });
 
   const [errors, setErrors] = useState({
-    phoneNumber: '',
-    company: '',
-    jobTitle: '',
+    phoneNumber: "",
+    company: "",
+    jobTitle: "",
   });
 
   const navigate = useNavigate();
@@ -80,44 +87,58 @@ const ContactForm = () => {
     const newErrors = {};
 
     if (!contact.phoneNumber || contact.phoneNumber.length !== 10) {
-      newErrors.phoneNumber = 'Phone number must be 10 digits long';
+      newErrors.phoneNumber = "Phone number must be 10 digits long";
     }
     if (!contact.company) {
-      newErrors.company = 'Company is required';
+      newErrors.company = "Company is required";
     }
     if (!contact.jobTitle) {
-      newErrors.jobTitle = 'Job Title is required';
+      newErrors.jobTitle = "Job Title is required";
     }
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
-
     try {
-      const response = await fetch('http://localhost:8800/api/contacts', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(contact),
-      });
+      const response = await fetch(
+        `https://crm-project-contact-api.onrender.com/api/contacts`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(contact),
+        }
+      );
 
       if (response.ok) {
-        console.log('Contact Submitted:', contact);
-        navigate('/');
+        console.log("Contact Submitted:", contact);
+        navigate("/");
       } else {
-        console.error('Failed to submit contact');
+        console.error("Failed to submit contact");
       }
     } catch (error) {
-      console.error('Error submitting contact:', error);
+      console.error("Error submitting contact:", error);
     }
   };
 
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{ maxWidth: 600, mx: 'auto', mt: 5, p: 4, boxShadow: 3, borderRadius: 2, backgroundColor: '#fff' }}>
-        <Typography variant="h5" textAlign="center" mb={3}>Add New Contact</Typography>
+      <Box
+        sx={{
+          maxWidth: 600,
+          mx: "auto",
+          mt: 5,
+          p: 4,
+          boxShadow: 3,
+          borderRadius: 2,
+          backgroundColor: "#fff",
+        }}
+      >
+        <Typography variant="h5" textAlign="center" mb={3}>
+          Add New Contact
+        </Typography>
         <form onSubmit={handleSubmit}>
           <TextField
             fullWidth
