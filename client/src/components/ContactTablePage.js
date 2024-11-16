@@ -219,20 +219,20 @@ const ContactsTablePage = () => {
             <TableHead>
               <TableRow>
                 {[
-                  "First Name",
-                  "Last Name",
-                  "Email",
-                  "Phone Number",
-                  "Company",
-                  "Job Title",
+                  { label: "First Name", key: "firstName" },
+                  { label: "Last Name", key: "lastName" },
+                  { label: "Email", key: "email" },
+                  { label: "Phone Number", key: "phoneNumber" },
+                  { label: "Company", key: "company" },
+                  { label: "Job Title", key: "jobTitle" },
                 ].map((field) => (
-                  <TableCell key={field}>
+                  <TableCell key={field.key}>
                     <TableSortLabel
-                      active={orderBy === field}
-                      direction={orderBy === field ? order : "asc"}
-                      onClick={() => handleSort(field)}
+                      active={orderBy === field.key}
+                      direction={orderBy === field.key ? order : "asc"}
+                      onClick={() => handleSort(field.key)}
                     >
-                      {field.charAt(0).toUpperCase() + field.slice(1)}
+                      {field.label}
                     </TableSortLabel>
                   </TableCell>
                 ))}
@@ -294,27 +294,29 @@ const ContactsTablePage = () => {
           <DialogTitle>Edit Contact</DialogTitle>
           <DialogContent>
             {[
-              "First Name",
-              "Last Name",
-              "Email",
-              "Phone Number",
-              "Company",
-              "JobTitle",
+              { label: "First Name", key: "firstName" },
+              { label: "Last Name", key: "lastName" },
+              { label: "Email", key: "email" },
+              { label: "Phone Number", key: "phoneNumber" },
+              { label: "Company", key: "company" },
+              { label: "Job Title", key: "jobTitle" },
             ].map((field) => (
               <TextField
-                key={field}
-                margin="dense"
-                label={field.charAt(0).toUpperCase() + field.slice(1)}
-                fullWidth
-                name={field}
-                value={selectedContact?.[field] || ""}
+                key={field.key}
+                label={field.label}
+                name={field.key}
+                value={selectedContact?.[field.key] || ""}
                 onChange={handleEditChange}
+                fullWidth
+                sx={{ mb: 2 }}
               />
             ))}
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleEditClose}>Cancel</Button>
-            <Button color="primary" onClick={handleEditSubmit}>
+            <Button onClick={handleEditClose} color="secondary">
+              Cancel
+            </Button>
+            <Button onClick={handleEditSubmit} variant="contained">
               Save
             </Button>
           </DialogActions>
@@ -324,12 +326,22 @@ const ContactsTablePage = () => {
           <DialogTitle>Delete Contact</DialogTitle>
           <DialogContent>
             <Typography>
-              Are you sure you want to delete this contact?
+              Are you sure you want to delete{" "}
+              <strong>
+                {selectedContact?.firstName} {selectedContact?.lastName}
+              </strong>
+              ?
             </Typography>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleDeleteClose}>Cancel</Button>
-            <Button color="secondary" onClick={handleDeleteSubmit}>
+            <Button onClick={handleDeleteClose} color="secondary">
+              Cancel
+            </Button>
+            <Button
+              onClick={handleDeleteSubmit}
+              variant="contained"
+              color="error"
+            >
               Delete
             </Button>
           </DialogActions>
